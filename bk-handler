@@ -30,7 +30,8 @@ def unblock(pipeline_slug, block_key, build_id, organization, fields):
     jobs = response.json()["jobs"]
     fjobs = list(filter(lambda j: j.get("step_key")== block_key, jobs))
     if len(fjobs) == 0:
-        print(f"No jobs with key: {block_key}")
+        step_keys = set(map(lambda j: j.get("step_key"), jobs))
+        print(f"No jobs with key: {block_key}\n{step_keys}")
         sys.exit(1)
     if len(fjobs) > 1:
         print(f"Too many jobs with key: {block_key}, {len(block_key)}")
